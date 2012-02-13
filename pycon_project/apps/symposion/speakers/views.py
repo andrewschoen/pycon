@@ -11,6 +11,7 @@ from django.contrib.auth.decorators import login_required
 from pinax.apps.account.forms import LoginForm
 
 from symposion.proposals.models import Proposal
+from symposion.schedule.models import Presentation
 from symposion.speakers.forms import SpeakerForm, SignupForm
 from symposion.speakers.models import Speaker
 
@@ -181,7 +182,9 @@ def speaker_profile(request, pk, template_name="speakers/speaker_profile.html", 
     
     # schedule may not be installed so we need to check for sessions
     if hasattr(speaker, "sessions"):
-        sessions = speaker.sessions.exclude(slot=None).order_by("slot__start")
+        sessions = Presentation.objects.filter(
+            Q(speaker=speaker)|Q(additional_speakers=speaker)
+        ).exclude(slot=None).distinct().order_by("slot__start")
     else:
         sessions = []
     
