@@ -37,9 +37,12 @@
                             </div>
                             {% if slot.content %}
                                 <div class="title"><a href="{% url schedule_presentation slot.content.pk %}">{{ slot.content.title }}</a></div>
-                                {% if slot.content.speaker %}
-                                    <div class="speaker">{{ slot.content.speaker }}</div>
-                                {% endif %}
+                                <div class="speaker">
+                                    {% for speaker in slot.content.speakers %}
+                                        {{ speaker }}
+                                        {% if not forloop.last %}, {% endif %}
+                                    {% endfor %}
+                                </div>
                             {% endif %}
                         {% endif %}
                     {% endif %}
