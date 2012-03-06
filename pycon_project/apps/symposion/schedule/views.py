@@ -499,7 +499,7 @@ def schedule_user_bookmarks(request, user_id, user_hash):
             event["uid"] = str(p.pk) + "-2012.us.pycon.org"
             cal.add_component(event)
     
-    response = HttpResponse(cal.as_string(), content_type="text/calendar")
+    response = HttpResponse(cal.to_ical(), content_type="text/calendar")
     response["Content-Disposition"] = "filename=pycon2012-%s-bookmarks.ics" % user.username.encode("utf-8")
     return response
 
